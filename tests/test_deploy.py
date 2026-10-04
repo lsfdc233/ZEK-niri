@@ -53,6 +53,38 @@ class DeployTest(unittest.TestCase):
             deploy_selected_configs(items_to_deploy=["kitty"])
             self.assertFalse((t.home / ".config" / "kitty" / ".module.toml").exists())
 
+    def test_state_file_goes_to_state_home_not_config(self):
+        with TempEnv() as t:
+            app = t.home / "configs" / "noctalia"
+            app.mkdir(parents=True)
+            (app / "conf").write_text("hello", encoding="utf-8")
+            (app / "settings.toml").write_text("v = 1", encoding="utf-8")
+            (app / ".module.toml").write_text(
+                '[packages]\nstate = ["settings.toml"]\n', encoding="utf-8"
+            )
+            failed = deploy_selected_configs(items_to_deploy=["noctalia"])
+            self.assertEqual(failed, [])
+            # state file must NOT land in ~/.config
+            self.assertFalse((t.home / ".config" / "noctalia" / "settings.toml").exists())
+            self.assertTrue((t.home / ".config" / "noctalia" / "conf").is_file())
+            # ...it lands in ~/.local/state/noctalia/
+            state_file = t.home / ".local" / "state" / "noctalia" / "settings.toml"
+            self.assertEqual(state_file.read_text(encoding="utf-8"), "v = 1")
+
+    def test_state_file_is_no_clobber(self):
+        with TempEnv() as t:
+            app = t.home / "configs" / "noctalia"
+            app.mkdir(parents=True)
+            (app / "settings.toml").write_text("repo", encoding="utf-8")
+            (app / ".module.toml").write_text(
+                '[packages]\nstate = ["settings.toml"]\n', encoding="utf-8"
+            )
+            state_dir = t.home / ".local" / "state" / "noctalia"
+            state_dir.mkdir(parents=True)
+            (state_dir / "settings.toml").write_text("mine", encoding="utf-8")
+            deploy_selected_configs(items_to_deploy=["noctalia"])
+            self.assertEqual((state_dir / "settings.toml").read_text(encoding="utf-8"), "mine")
+
     def test_missing_source_reports_failure(self):
         with TempEnv() as t:
             (t.home / "configs").mkdir(exist_ok=True)

@@ -5,7 +5,9 @@ Coordinates the deploy siblings: atomic (swap + preserve), manifest (app
 discovery), templates (placeholder render), assets (static files).
 """
 
+import shutil
 import sys
+from pathlib import Path
 from typing import List, Optional
 
 from zekniri.constants import CLI_CMD, Colors
@@ -27,6 +29,27 @@ def discover_config_items() -> List[str]:
         return _CONFIG_ITEMS_CACHE
     _CONFIG_ITEMS_CACHE = discover_deployable_apps()
     return _CONFIG_ITEMS_CACHE
+
+
+def _deploy_state_files(app: str, src: Path, state_files: List[str]) -> None:
+    """Install manifest ``state`` files into <state_home>/<app>/ (no-clobber).
+
+    These are runtime state files an app owns (e.g. noctalia's settings.toml),
+    so a file already present is left alone — the repo copy is only a seed.
+    """
+    if not state_files:
+        return
+    env = get_env()
+    dest_dir = env.state_home / app
+    for rel in state_files:
+        src_file = src / rel
+        dest_file = dest_dir / rel
+        if not src_file.is_file() or dest_file.exists():
+            continue
+        dest_file.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src_file, dest_file)
+        print(msg("log_deploy_state_item", app, rel))
+        log_msg("INFO", f"Deployed state file ~/.local/state/{app}/{rel}")
 
 
 def _phase_atomic_deployment(
@@ -62,6 +85,7 @@ def _phase_atomic_deployment(
             preserved_log=preserved_log,
             test_mode=test_mode,
             preserve=manifest.preserve,
+            exclude=manifest.state,
         ):
             failed_items.append(item)
             print(msg("log_deploy_config_failed", item), file=sys.stderr)
@@ -74,6 +98,8 @@ def _phase_atomic_deployment(
                         p.chmod(0o755)
                     except OSError:
                         pass
+
+        _deploy_state_files(item, src, manifest.state)
 
         print(msg("log_deploy_config_item", item))
         log_msg("INFO", f"Deployed config ~/.config/{item}")

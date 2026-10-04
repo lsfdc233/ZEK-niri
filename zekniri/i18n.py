@@ -149,6 +149,7 @@ TRANSLATIONS = {
         "copy_done": "Configs deployed.",
         # deploy logs
         "log_deploy_config_item": "[✓] deployed {0}",
+        "log_deploy_state_item": "  installed ~/.local/state/{0}/{1}",
         "log_deploy_config_failed": "[✗] failed to deploy {0}",
         "deploy_failed": "[✗] Deploy failed: {0}",
         "log_keep_custom_file": "  kept {0}",
@@ -313,6 +314,7 @@ TRANSLATIONS = {
         "copying_configs": "正在部署配置…",
         "copy_done": "配置已部署。",
         "log_deploy_config_item": "[✓] 已部署 {0}",
+        "log_deploy_state_item": "  已安装 ~/.local/state/{0}/{1}",
         "log_deploy_config_failed": "[✗] 部署失败 {0}",
         "deploy_failed": "[✗] 部署失败：{0}",
         "log_keep_custom_file": "  已保留 {0}",

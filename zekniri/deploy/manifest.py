@@ -16,7 +16,7 @@ Pure stdlib (``tomllib``, 3.11+). No app names are hardcoded.
 """
 
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -41,6 +41,8 @@ class ModuleManifest:
     detect: str
     is_deployable: bool
     is_optional: bool = False
+    # Files deployed to <state_home>/<app>/ instead of ~/.config/<app>/.
+    state: List[str] = field(default_factory=list)
 
 
 def _manifest_path(app_src: Path) -> Path:
@@ -85,6 +87,7 @@ def load_manifest(app_src: Path, is_optional: bool = False) -> ModuleManifest:
         packages_flatpak=list(packages.get("flatpak", [])),
         preserve=list(packages.get("preserve", [])),
         chmod=list(packages.get("chmod", [])),
+        state=list(packages.get("state", [])),
         label=packages.get("label", name),
         category=packages.get("category", ""),
         detect=packages.get("detect", name),
@@ -137,6 +140,7 @@ def _merge_optional_entry(m: ModuleManifest, entry: dict) -> ModuleManifest:
         packages_flatpak=list(entry.get("flatpak", m.packages_flatpak)),
         preserve=m.preserve,
         chmod=m.chmod,
+        state=m.state,
         label=entry.get("label", m.label),
         category=entry.get("category", m.category),
         detect=entry.get("detect", m.detect),

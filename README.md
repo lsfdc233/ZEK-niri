@@ -88,7 +88,9 @@ ZEK-niri test                      沙箱部署（开发者）
 
 ## 致谢与主页
 - QQ：`1846318834` QQ(备用): `3456599262`
+- [bilibili/Zer05ky凌空-ZEK](https://space.bilibili.com/575667990?spm_id_from=333.1007.0.0) 我的b站主页
+- [bilibili/Zer05ky](https://space.bilibili.com/1168962291?spm_id_from=333.1387.follow.user_card.click) 我的直播间
 - [SHORiN-KiWATA/shorin-arch-setup](https://github.com/SHORiN-KiWATA/shorin-arch-setup)  waybar配置来源
 - [ech678/Nyxniri](https://github.com/ech678/Nyxuri) 安装程序的灵感与借鉴来源
- - [KaguyaMao/Tsukuyomi](https://github.com/KaguyaMao/Tsukuyomi) 使用的agent
+- [KaguyaMao/Tsukuyomi](https://github.com/KaguyaMao/Tsukuyomi) 使用的agent
  

@@ -22,11 +22,28 @@ from zekniri.core import get_env, log_msg, register_temp_path, remove_path
 from zekniri.i18n import msg
 
 
-def _deploy_ignore_factory():
-    """copytree ignore: drop repo-only entries that must not ship to ~/.config."""
+def _deploy_ignore_factory(root_src: Path, exclude: Optional[List[str]] = None):
+    """copytree ignore: drop repo-only entries and explicitly excluded paths.
+
+    ``exclude`` holds repo-relative paths (e.g. a manifest ``state`` file) that
+    are deployed elsewhere and must not also land in ~/.config.
+    """
+    ex = {e for e in (exclude or []) if e}
 
     def _ignore(src_dir, names):
-        return {n for n in names if n in ("__pycache__", ".module.toml")}
+        skip = {n for n in names if n in ("__pycache__", ".module.toml")}
+        if ex:
+            cur = Path(src_dir)
+            for name in names:
+                if name in skip:
+                    continue
+                try:
+                    rel = (cur / name).relative_to(root_src).as_posix()
+                except ValueError:
+                    rel = name
+                if rel in ex:
+                    skip.add(name)
+        return skip
 
     return _ignore
 
@@ -38,6 +55,7 @@ def atomic_replace_item(
     test_mode: bool = False,
     preserve: Optional[List[str]] = None,
     preserve_custom: bool = True,
+    exclude: Optional[List[str]] = None,
 ) -> bool:
     """Atomic swap with Dunder protocol preservation.
 
@@ -81,7 +99,7 @@ def atomic_replace_item(
         dest_parent.mkdir(parents=True, exist_ok=True)
         if tmp_new.exists() or tmp_new.is_symlink():
             remove_path(tmp_new)
-        shutil.copytree(src, tmp_new, symlinks=True, ignore=_deploy_ignore_factory())
+        shutil.copytree(src, tmp_new, symlinks=True, ignore=_deploy_ignore_factory(src, exclude))
 
         # Dunder protocol: inherit *__custom__* files and directories from dest.
         if preserve_custom and dest.is_dir():

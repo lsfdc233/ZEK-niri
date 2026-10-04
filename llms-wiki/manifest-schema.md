@@ -15,6 +15,7 @@ All fields live under `[packages]`:
 | `flatpak` | `[]` | Flathub app IDs |
 | `preserve` | `[]` | exact filenames kept across deploys |
 | `chmod` | `[]` | globs (relative to app dir) set executable |
+| `state` | `[]` | files deployed to `<state_home>/<app>/` instead of `~/.config` (no-clobber seed; e.g. noctalia `settings.toml`) |
 | `label` | `<dir name>` | menu display name |
 | `detect` | `<dir name>` | command name used to detect installation |
 
@@ -37,7 +38,15 @@ One file at the configs root. Each `[[app]]` block:
 
 Block order is menu order. An app in both files is one entry with
 `is_deployable=True` and `is_optional=True`: optional-axis fields come from the
-toml, config-axis fields (`preserve`, `chmod`) stay in the `.module.toml`.
+toml, config-axis fields (`preserve`, `chmod`, `state`) stay in the `.module.toml`.
+
+## `state` files vs `preserve`
+
+- `state` — repo-relative paths that are **excluded** from the `~/.config/<app>/`
+  deploy and instead copied (once, never overwriting) to
+  `<XDG_STATE_HOME>/<app>/<path>`. For app-owned runtime files that don't belong
+  in `~/.config`, e.g. noctalia's `settings.toml` → `~/.local/state/noctalia/`.
+- `preserve` — files already in the destination that must survive a deploy.
 
 ## Boundaries
 

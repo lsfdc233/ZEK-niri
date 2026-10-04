@@ -103,13 +103,15 @@ class Environment:
             state_path = Path(raw_state)
             try:
                 if state_path.is_relative_to(self.home):
-                    self.state_dir = state_path / PROJECT_NAME
+                    self.state_home = state_path
                 else:
-                    self.state_dir = self.home / ".local/state" / PROJECT_NAME
+                    self.state_home = self.home / ".local/state"
             except (ValueError, AttributeError):
-                self.state_dir = self.home / ".local/state" / PROJECT_NAME
+                self.state_home = self.home / ".local/state"
         else:
-            self.state_dir = self.home / ".local/state" / PROJECT_NAME
+            self.state_home = self.home / ".local/state"
+        # Tool-owned runtime transients live under <state_home>/<PROJECT_NAME>.
+        self.state_dir = self.state_home / PROJECT_NAME
 
         self.cache_dir = self.home / ".cache" / PROJECT_NAME
 
