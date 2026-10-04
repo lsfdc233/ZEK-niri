@@ -1,0 +1,6 @@
+# Alacritty ships only alacritty.toml. The themes/ and images/ trees are
+# external (downloaded theme collection + generated noctalia.toml), so they are
+# preserved across updates instead of being dropped.
+[packages]
+label = "Alacritty"
+preserve = ["themes", "images"]

@@ -1,0 +1,3 @@
+[shell]
+polkit_agent = true
+

@@ -1,0 +1,391 @@
+{
+  //电池电量
+  "battery": {
+    "interval": 60,
+    "states": {
+      "critical": 20,
+    },
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}% ",
+    "format-icons": [
+      "󰂎",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂂",
+      "󰁹"
+    ],
+    "tooltip-format": "剩余电量：{capacity}%\n充 放 电 ：{power}\n可用时间：{timeTo}\n---\n电池健康度：{health}%\n---\n左键：打开电源面板",
+    "on-click": "noctalia msg panel-toggle control-center power",
+  },
+  //时钟
+  "clock": {
+    "interval": 60,
+    "format": "󰥔 {:%H:%M}",
+    "tooltip-format": "{:%Y/%m/%d %A}\n---\n左键：打开日历\n右键：打开设置",
+    "max-length": 25,
+    "on-click": "noctalia msg panel-toggle control-center calendar",
+    "on-click-right": "noctalia msg settings-toggle",
+  },
+  "clock#date": {
+    // "interval":
+    "format": "󰸗",
+    // "timezone":
+    // "timezones":
+    // "locale":
+    // "rotate":
+    // "on-click":
+    // "on-click-middle":
+    // "on-click-right":
+    // "on-scroll-up":
+    // "on-scroll-down":
+    // "smooth-scrolling-threshold":
+    // "tooltip":
+    "on-click": "noctalia msg panel-toggle control-center calendar",
+    "tooltip-format": "{:%Y/%m/%d %A}",
+  },
+  //正在运行的软件
+  "tray": {
+    "icon-size": 18,
+    "spacing": 6,
+    // 自定义图标
+    //"icons": {
+    //     "blueman": "/home/shorin/.config/waybar/logo/bluetooth.png",
+    //},
+  },
+  //工作区和窗口名字
+  "niri/workspaces": {
+    "format": "{value}",
+  },
+  "niri/window": {
+    "format": "{}",
+    "rewrite": {
+      "(.*) - Mozilla Firefox": "🌎 $1",
+      "(.*) - zsh": "> [$1]",
+    },
+  },
+  //网络和蓝牙
+  "group/network-bluetooth": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-left-to-right": false,
+    },
+    "modules": [
+      "network",
+      "bluetooth"
+    ],
+  },
+  "network": {
+    "format-disconnected": "{icon}",
+    "format-wifi": "{icon}",
+    "format-ethernet": "{icon}",
+    "format-icons": {
+      "disconnected": "󰤮",
+      "wifi": [
+        "󰤯",
+        "󰤟",
+        "󰤢",
+        "󰤥",
+        "󰤨"
+      ],
+      "ethernet": "󰈀",
+    },
+    //鼠标悬浮在wifi图标上会显示wifi名称、信号强度、ip地址、设备名
+    "tooltip-format-wifi": "{essid} ({signalStrength}%)\n{ifname} : {ipaddr}\n---\n左键：打开网络面板\n右键：断开/重连网络",
+    "tooltip-format-ethernet": "{ifname} : {ipaddr}\n---\n左键：打开网络面板\n右键：断开/重连网络",
+    "tooltip-format-disconnected": "网络未连接\n---\n左键：打开网络面板\n右键：断开/重连网络",
+    "on-click": "noctalia msg panel-toggle control-center network",
+    "on-click-right": "noctalia msg network-toggle",
+  },
+  "bluetooth": {
+    //蓝牙关闭状态下的图标和鼠标悬浮时的提示
+    "format-disabled": "󰂲",
+    "tooltip-format-disabled": "右键：启用蓝牙",
+    "format": "󰂯",
+    "tooltip-format-on": "左键：打开蓝牙面板\n右键：切换蓝牙",
+    //连接状态下的图标和提示
+    "format-connected": "󰂱",
+    "tooltip-format-connected": "󰂱 {device_alias}\n---\n左键：打开蓝牙面板",
+    //点击功能
+    "on-click-right": "noctalia msg bluetooth-toggle",
+    "on-click": "noctalia msg panel-toggle control-center bluetooth",
+  },
+  //左键循环切换性能模式（与 noctalia msg power-cycle 等价）
+  "power-profiles-daemon": {
+    "format": "{icon}",
+    "tooltip-format": "当前性能模式：{profile}\n---\n左键：切换性能模式",
+    "tooltip": true,
+    "format-icons": {
+      "performance": "󱐋",
+      "balanced": "",
+      "power-saver": "",
+    },
+  },
+  //截图
+  "custom/screenshot": {
+    "format": "",
+    "tooltip-format": "左键：区域截图\n中键：全屏截图\n右键：截图标注",
+    "on-click": "noctalia msg screenshot-region",
+    "on-click-middle": "noctalia msg screenshot-fullscreen",
+    "on-click-right": "noctalia msg screenshot-annotate"
+  },
+  //声音模块
+  "group/audio": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-left-to-right": false,
+    },
+    "modules": [
+      "pulseaudio",
+      "pulseaudio/slider"
+    ],
+  },
+  "pulseaudio": {
+    "tooltip-format": "左键：静音\n右键：关闭麦克风\n中键：打开音频面板\n滚轮：调节音量",
+    "format": "{icon} {format_source} ",
+    "format-bluetooth": " {format_source} ",
+    "format-source": "{volume}%",
+    "format-source-muted": "",
+    "format-muted": " {format_source} ",
+    "format-icons": {
+      "headphone": "",
+      "headset": "",
+      "bluetooth": "",
+      // "speaker":"󰓃"
+      "speaker": [
+        "",
+        "",
+        ""
+      ],
+    },
+    "on-click": "noctalia msg volume-mute",
+    "on-click-right": "noctalia msg mic-mute",
+    "on-click-middle": "noctalia msg panel-toggle control-center audio",
+    "on-scroll-up": "noctalia msg volume-up",
+    "on-scroll-down": "noctalia msg volume-down",
+  },
+  "pulseaudio/slider": {
+    "min": 0,
+    "max": 100,
+    "orientation": "horizontal",
+  },
+  //多媒体
+  "mpris": {
+    "format": "{player_icon}",
+    "format-paused": "{status_icon}",
+    "player-icons": {
+      "default": "▶",
+    },
+    "status-icons": {
+      "paused": "⏸",
+    },
+    "toooltip": "{dynamic}",
+    "enable-tooltip-len-limits": true,
+  },
+  //logo+程序启动器
+  "custom/applauncher": {
+    "tooltip-format": "左键：打开启动器\n右键：打开控制中心",
+    "format": "",
+    "on-click": "noctalia msg panel-toggle launcher",
+    "on-click-right":"noctalia msg panel-toggle control-center"
+  },
+  //电源菜单
+  "group/powermenu": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-left-to-right": false,
+    },
+    "modules": [
+      "custom/wlogout",
+    ],
+  },
+  "custom/wlogout": {
+    "tooltip-format": "左键：呼出会话面板",
+    "format": "󰐥",
+    "on-click": "noctalia msg panel-toggle session",
+    "on-scroll-up": "true",
+    "on-scroll-down": "true"
+  },
+  //内屏亮度
+  "backlight/slider": {
+    "min": 5,
+    "max": 100,
+    "orientation": "horizontal",
+  },
+  "backlight": {
+    "tooltip": true,
+    "tooltip-format":"调节内屏亮度",
+    "format": "{icon}",
+    "format-icons": [
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      ""
+    ],
+  },
+  //调节外接屏幕亮度
+  "group/ddcutil": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-left-to-right": false,
+    },
+    "modules": [
+      "custom/ddcutil-day",
+      "backlight/slider",
+      "backlight",
+      "custom/separator#1",
+      "custom/ddcutil-sleep",
+      "custom/ddcutil-night",
+    ],
+  },
+  "custom/ddcutil-day": {
+    "tooltip-format": "左键：100%外接屏幕亮度\n右键：切换夜间模式",
+    "format": "󰃠",
+    "on-click": "ddcutil --display 1 setvcp 10 100 ",
+    "on-click-right": "noctalia msg nightlight-toggle",
+    "on-scroll-up": "true",
+    "on-scroll-down": "true"
+  },
+  "custom/ddcutil-night": {
+    "tooltip-format": "左键：65%外接屏幕亮度",
+    "format": "󰃟",
+    "on-click": "ddcutil --display 1 setvcp 10 65 ",
+    "on-scroll-up": "true",
+    "on-scroll-down": "true"
+  },
+  "custom/ddcutil-sleep": {
+    "tooltip-format": "左键：5%外接屏幕亮度",
+    "format": "󰃞",
+    "on-click": "ddcutil --display 1 setvcp 10 5 ",
+    "on-scroll-up": "true",
+    "on-scroll-down": "true"
+  },
+  //swaync通知模块
+  "custom/swaync": {
+    "tooltip": false,
+    "format": "{}",
+    "return-type": "json",
+    "exec": "~/.config/waybar/scripts/noctalia-notification.sh",
+    "interval": 10,
+    "on-click": "noctalia msg panel-toggle control-center notifications",
+    "on-click-right": "noctalia msg notification-dnd-toggle",
+    "escape": true,
+  },
+  "custom/mako": {
+    "format": "",
+    "on-click": "noctalia msg panel-toggle control-center notifications",
+  },
+  //control-center 
+  "custom/settings": {
+    "format": "",
+    "on-click": "noctalia msg panel-toggle control-center",
+    "tooltip-format": "左键：打开控制中心",
+  },
+  //音频可视化
+  "custom/cava": {
+    "tooltip": false,
+    "format": "{}",
+    "exec": "~/.config/waybar/scripts/cava.sh",
+    "on-click": "noctalia msg media toggle"
+  },
+  //禁止熄屏
+  "idle_inhibitor": {
+    "format": "{icon}",
+    "format-icons": {
+      "activated": "",
+      "deactivated": "",
+    },
+    // 这一项设置启动waybar的时候自动禁止熄屏
+    "start-activated":true,
+    "tooltip-format-activated": "自动熄屏已禁止",
+    "tooltip-format-deactivated": "自动熄屏已开启",
+    "on-click-right": "noctalia msg theme-mode-toggle"
+  },
+  //分隔符󰇝 󱋱
+  "custom/separator#1": {
+    "format": "󱋱",
+    "tooltip": false,
+  },
+  //隐私
+  "privacy": {
+    "icon-spacing": 10,
+    "icon-size": 16,
+    "transition-duration": 250,
+    "modules": [
+      {
+        "type": "screenshare",
+        "tooltip": true,
+        "tooltip-icon-size": 24,
+      },
+    ],
+  },
+  "cffi/niri-taskbar": {
+    // module_path
+    "module_path": "/usr/lib/waybar/libniri_taskbar.so",
+    "apps": {
+      "signal": [
+        {
+          "match": "\\([0-9]+\\)$",
+          "class": "unread",
+        },
+      ],
+    },
+  },
+  // dwl and mangowc
+  "ext/workspaces": {
+    "format": "{icon}",
+    //"format-icons": {
+    //        "active": "󰜋",
+    //        "default": ""
+    //    },
+    "ignore-hidden": true,
+    "on-click": "activate",
+    "on-click-right": "deactivate",
+    "sort-by-id": true,
+  },
+  "dwl/window": {
+    "format": "[{layout}]{title}",
+  },
+  //剪贴板
+  "custom/clipboard":{
+    "format":"󰅍",
+    "on-click":"noctalia msg panel-toggle clipboard",
+    "on-click-right":"noctalia msg clipboard-clear",
+    "tooltip-format":"左键：打开剪贴板历史\n右键：清除剪贴板历史"
+  },
+  // 壁纸切换
+ "custom/wallpapers":{
+    "format":"󰸉",
+    "tooltip-format":"左键：打开壁纸面板\n右键：随机切换壁纸\n中键：下一张壁纸",
+    "on-click":"noctalia msg panel-toggle wallpaper",
+    "on-click-right":"noctalia msg wallpaper-random",
+    "on-click-middle":"noctalia msg wallpaper-next"
+ },
+ // 常用命令
+ "custom/actions":{
+   "format":"",
+   "tooltip-format":"左键：打开 Kitty 终端\n右键：打开 Alacritty 终端",
+   // setsid -f 让终端脱离 waybar 进程组，不会出现waybar重载关闭终端问题
+   "on-click":"setsid -f kitty",
+   "on-click-right":"setsid -f alacritty"
+ },
+
+ // 配色切换：预设<-> Noctalia取色器
+ "custom/colors-theme":{
+   "format":"{}",
+   "return-type":"json",
+   "exec":"~/.config/waybar/scripts/toggle-colors.sh status",
+   "tooltip":true,
+   "on-click":"~/.config/waybar/scripts/toggle-colors.sh toggle"
+ }
+
+}

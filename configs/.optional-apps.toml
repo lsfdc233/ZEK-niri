@@ -1,0 +1,2 @@
+# Optional apps — package metadata only, no config shipped.
+# Add one [[app]] block per app. See llms-wiki/manifest-schema.md.

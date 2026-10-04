@@ -1,0 +1,30 @@
+# zekniri
+
+> zekniri atomically deploys a `configs/` tree into `~/.config`. Three layers stack
+> (defaults → `__custom__` → manifest `preserve`), two install modes exist
+> (local checkout / remote cache), the engine is pure Python stdlib (3.11+, for
+> `tomllib`). Repo = source of truth; `~/.config` = derived state.
+
+This is the LLM-friendly reference: one topic per page, self-contained, load on
+demand. Source code is always the final truth; this wiki mirrors it.
+
+## Architecture
+
+- [overview](overview.md): the model, the two axes, the deploy verb
+- [file-preservation](file-preservation.md): Dunder `__custom__` vs manifest `preserve` (two mechanisms, on purpose)
+- [manifest-schema](manifest-schema.md): `.module.toml` + `.optional-apps.toml`
+- [install-modes](install-modes.md): repo vs cache vs system, update paths
+- [testing](testing.md): TempEnv isolation, test shapes
+
+## Source of truth
+
+- `install.sh`, `zekniri/**/*.py`, `configs/**` — the code. This wiki is a mirror.
+
+## Shipped configs
+
+`configs/` currently holds: `alacritty`, `cava`, `fastfetch`, `kitty`,
+`niri` (with `cfg/` and `animations/`), `noctalia`, `waybar`.
+Wallpapers live in `assets/wallpapers/` (deployed to `~/.local/share/ZEKniri`).
+Per-app manifests only declare what is exceptional — see
+[manifest-schema](manifest-schema.md). `niri` and `waybar` use `preserve`/`chmod`;
+the rest use defaults.

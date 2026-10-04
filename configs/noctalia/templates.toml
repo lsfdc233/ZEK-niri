@@ -1,0 +1,16 @@
+# Noctalia 用户模板：让 Noctalia 管理 Waybar 的配色方案
+#
+# 源模板：~/.config/noctalia/templates/waybar-colors.css
+# 输出：  ~/.config/waybar/colors-noctalia.css   （单独保存，不覆盖预设版）
+#
+# 调色板变化时（切换主题 / 壁纸 / 明暗模式）会自动重新渲染。
+# post_hook 走防抖脚本 reload-waybar.sh，避免多次重载间隔过短把 waybar 撞崩。
+#
+# Waybar 实际使用哪套配色由 style.css 顶部决定：
+#   @import "colors.css";            -> 预设版
+#   @import "colors-noctalia.css";   -> Noctalia 自动生成版
+
+[theme.templates.user.waybar]
+input_path  = "$XDG_CONFIG_HOME/noctalia/templates/waybar-colors.css"
+output_path = "$XDG_CONFIG_HOME/waybar/colors-noctalia.css"
+post_hook   = "bash $HOME/.config/waybar/scripts/reload-waybar.sh || true"

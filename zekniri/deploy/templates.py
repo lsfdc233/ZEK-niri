@@ -1,0 +1,74 @@
+"""Portable template rendering — replace the ``/home/user`` placeholder with the
+real ``$HOME`` in already-deployed config files.
+
+Side-effect-light on purpose: pure text substitution over ``~/.config/<app>``.
+Binary files are skipped by attempting a strict UTF-8 decode.
+"""
+
+from pathlib import Path
+from typing import Optional
+
+from zekniri.core import get_env, log_msg
+
+PLACEHOLDER = "/home/user"
+_TEXT_EXTENSIONS = {
+    ".kdl", ".conf", ".toml", ".json", ".jsonc", ".ini", ".css", ".sh", ".fish",
+    ".lua", ".yml", ".yaml", ".txt", ".md", ".cfg", ".theme", ".desktop", ".xml",
+}
+
+
+def _is_probably_text(path: Path) -> bool:
+    if path.suffix.lower() in _TEXT_EXTENSIONS:
+        return True
+    try:
+        data = path.read_bytes()
+    except OSError:
+        return False
+    if b"\x00" in data:
+        return False
+    try:
+        data.decode("utf-8")
+        return True
+    except UnicodeDecodeError:
+        return False
+
+
+def _render_file(path: Path, home: str) -> bool:
+    try:
+        content = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return False
+    if PLACEHOLDER not in content:
+        return False
+    path.write_text(content.replace(PLACEHOLDER, home), encoding="utf-8")
+    return True
+
+
+def _phase_render_templates(only_app: Optional[str] = None) -> None:
+    """Replace the placeholder across deployed config files.
+
+    ``only_app`` restricts rendering to one app; None renders the whole config
+    tree. Called after every deploy and after backup restores.
+    """
+    env = get_env()
+    config_dir = env.config_dir
+    home = str(env.home)
+
+    if only_app is not None:
+        roots = [config_dir / only_app]
+    else:
+        roots = [p for p in config_dir.iterdir() if p.is_dir()] if config_dir.is_dir() else []
+
+    rendered = 0
+    for root in roots:
+        if not root.is_dir():
+            continue
+        for path in root.rglob("*"):
+            if path.is_symlink() or not path.is_file():
+                continue
+            if not _is_probably_text(path):
+                continue
+            if _render_file(path, home):
+                rendered += 1
+    if rendered:
+        log_msg("INFO", f"Rendered placeholder in {rendered} file(s)")

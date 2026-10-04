@@ -1,0 +1,7 @@
+[general]
+import = [
+    "~/.config/alacritty/themes/ZEK.toml",
+    "~/.config/alacritty/themes/noctalia.toml",
+]
+[window]
+opacity = 0.7

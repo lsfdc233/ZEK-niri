@@ -1,0 +1,3 @@
+[packages]
+label = "Kitty"
+preserve = ["no-preference-theme.auto.conf"]
