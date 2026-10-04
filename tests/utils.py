@@ -40,6 +40,7 @@ class TempEnv:
         core._ENV = None
         core._VERSION_CACHE = ""
         core._LOG_FILE = None
+        core._PICS_DIR_CACHE = None
 
         import zekniri.deploy.deploy as _deploy_core
         import zekniri.deploy.manifest as _deploy_manifest

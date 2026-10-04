@@ -24,7 +24,7 @@ demand. Source code is always the final truth; this wiki mirrors it.
 
 `configs/` currently holds: `alacritty`, `cava`, `fastfetch`, `kitty`,
 `niri` (with `cfg/` and `animations/`), `noctalia`, `waybar`.
-Wallpapers live in `assets/wallpapers/` (deployed to `~/.local/share/ZEKniri`).
+Wallpapers live in `assets/wallpapers/` (deployed to `~/图片/wallpaper`, i.e. `<Pictures>/wallpaper`).
 Per-app manifests only declare what is exceptional — see
 [manifest-schema](manifest-schema.md). `niri` and `waybar` use `preserve`/`chmod`;
 the rest use defaults.

@@ -136,6 +136,37 @@ def get_env() -> Environment:
     return _ENV
 
 
+# --- Pictures directory ------------------------------------------------------
+
+_PICS_DIR_CACHE: Optional[Path] = None
+
+
+def get_pics_dir() -> Path:
+    """Resolve the user's Pictures directory (XDG), with a safe fallback.
+
+    Used as the base for the wallpaper folder so files land where desktop tools
+    expect them (e.g. ``~/图片``) instead of a dot directory.
+    """
+    global _PICS_DIR_CACHE
+    if _PICS_DIR_CACHE is not None:
+        return _PICS_DIR_CACHE
+    home = get_env().home
+    try:
+        res = subprocess.run(
+            ["xdg-user-dir", "PICTURES"],
+            capture_output=True, text=True, check=False,
+            env={**os.environ, "LC_ALL": "C"},
+        )
+        d = res.stdout.strip()
+        if d and d != str(home):
+            _PICS_DIR_CACHE = Path(d)
+            return _PICS_DIR_CACHE
+    except Exception:
+        pass
+    _PICS_DIR_CACHE = home / "Pictures"
+    return _PICS_DIR_CACHE
+
+
 # --- Version -----------------------------------------------------------------
 
 _VERSION_CACHE: str = ""

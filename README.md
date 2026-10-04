@@ -43,7 +43,7 @@ ZEKniri/
 │   ├── niri/               窗口管理器（包含动画和
 │   ├── noctalia/           桌面壳与调色模板
 │   └── waybar/             状态栏（含 scripts/）
-├── assets/wallpapers/       壁纸，部署到 ~/.local/share/ZEKniri
+├── assets/wallpapers/       壁纸，部署到 ~/图片/wallpaper
 ├── logo/title               启动页标题
 └── preview/                 演示图
 ```
@@ -67,7 +67,7 @@ cd ~/ZEKniri
 安装一次之后，在终端直接输入 **`ZEK-niri`** 就能打开控制面板
 
 - 配置 → `~/.config/<应用>/`
-- 壁纸 → `~/.local/share/ZEKniri/wallpapers/`
+- 壁纸 → `~/pictures/wallpaper/`
 - 快照 → `~/.config/ZEKniri/backups/`
 
 ## 命令
@@ -89,6 +89,6 @@ ZEK-niri test                      沙箱部署（开发者）
 ## 致谢与主页
 - QQ：`1846318834` QQ(备用): `3456599262`
 - [SHORiN-KiWATA/shorin-arch-setup](https://github.com/SHORiN-KiWATA/shorin-arch-setup)  waybar配置来源
-- [Matsuzaka Yuki/Nyxniri](https://github.com/matsuzaka-yuki/NyxNiri) 安装程序的灵感与借鉴来源
+- [ech678/Nyxniri](https://github.com/ech678/Nyxuri) 安装程序的灵感与借鉴来源
  - [KaguyaMao/Tsukuyomi](https://github.com/KaguyaMao/Tsukuyomi) 使用的agent
  
